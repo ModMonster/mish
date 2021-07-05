@@ -1,0 +1,14 @@
+exec - Excecutes files.
+Usage: exec <file>
+
+Excecutes the current file in the default application depending on the file type. If the specified path is a folder, it will open in the file manager.
+
+EXAMPLES
+    exec /home
+        Opens the file manager in the home directory, which is in the root of the filesystem.
+    exec /home/text.txt
+        Opens text.txt, which is in the home directory, which is in the root of the filesystem.
+    exec example.txt
+        Opens example.txt, which is inside of the current directory.
+    exec ..
+        Opens the file manager in the parent directory of the current directory.
