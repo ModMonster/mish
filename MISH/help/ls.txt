@@ -1,0 +1,14 @@
+ls - Lists files.
+Usage: ls <directory>
+
+Lists the files in the directory with the name of whatever you type. You can use a relative path or an absolute path.
+
+EXAMPLES
+    ls example
+        Lists the files in a directory named example in the current directory.
+    ls example/hello
+        Lists the files in a directory named hello within the directory example within the current directory.
+    ls /example
+        Lists the files in a directory named example within the root of the filesystem.
+    ls ../example
+        Lists the files in a directory named example within the parent directory of the current directory.

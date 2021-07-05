@@ -1,0 +1,49 @@
+mash - Installs programs.
+Mod's Amazing Script Handler, aka Mash is an easy way to download scripts from the internet.
+
+SYNTAX
+    mash install <package>
+        Downloads and installs the specified package from the web.
+    mash remove <package>
+        Removes the specified package from the /scripts folder.
+    mash update (package)
+        Updates all installed packages. Optionally, you can specify a package and it will be the only one updated.
+    mash list <installed/available)
+        Lists all installed packages, or all packages available in the Mash repository.
+
+MAKING YOUR OWN MASH REPOSITORY
+    If you want to host your own Mish commands to be installed through Mash, it's fairly easy.
+    The first thing to do is esablish some sort of web hosting for your scripts.
+    You need to then upload a folder containing three files:
+    
+    package.py
+        This contains all of the code for your script. It will be placed in the scripts folder. Rename it to whatever your script is called.
+    package.txt
+        This is the help file for your script. It will be placed in the help folder, if the user chose to install help when installing Mish. Rename it to whatever your script is called.
+    info.txt
+        This is the only file that doesn't actually get downloaded.
+        You need to put three different pieces of information on three different lines.
+
+        LINE 1
+            Size of your script + your help file.
+        LINE 2
+            Size of just your script.
+        LINE 3
+            Version of your script. This is used for updating to check if your script's version is higher than the current version.
+        
+        For example, you might end up with:
+
+        2.54 KB
+        1.98 KB
+        1.0.0
+
+    Once you have these three files, put them on to your server in a folder with the same name as your package. Here's what it looks like for the cd command.
+
+    cd (folder)
+    | - cd.py (script file)
+    | - cd.txt (help file)
+    | - info.txt (info file)
+
+    Lastly, you need to change the variable "mashURL" within the Mash script to point towards your server. You should point it towards the folder containing all of the package folders.
+    
+    That's it! You should now be able to install various packages from your own server!

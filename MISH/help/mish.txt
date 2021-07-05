@@ -1,0 +1,25 @@
+Welcome to Mod's Interactive Shell, aka Mish.
+Mish is a modular shell written in Python. It is very easy to make your own commands to run to increase your productivity and help you complete monotonous tasks quickly.
+
+THE FILESYSTEM
+    Mish's filesystem is made up of a directories which are all located inside the root directory. The root directory is known as "/".
+    The current directory is displayed to the left of the typing prompt arrow.
+    You can use the "cd" command to change which directory you are currently in.
+
+    Here is a breakdown of the default directories found on the root of the filesystem.
+
+    HELP
+        Stores all of the text that shows up when you type "help <command>" within plain text files. Within "mish.txt" is the text you are reading now!
+    HOME
+        Stores all of the user files. It's the directory that you get sent to when starting Mish and is empty by default.
+    SCRIPTS
+        Stores all of the scripts that act as commands within the shell. These scripts are written in Python. If you are going to tinker with them, you should make a backup first so that you don't accidentally mess them up.
+    SHELL
+        Stores the core files of Mish. These shouldn't be tampered with unless you know what you're doing.
+
+MAKING YOUR OWN COMMANDS
+    It's easy to make your own command in Mish, assuming you have some experience with Python. The commands are known as scripts and are located in the scripts folder. You can make a new command by making a new file in the scripts folder with the name of your command and the .py extension. Then, you can just code what you want your script to do in Python.
+    If you want to access the current directory or see what arguments your command was run with, you can read the files "dir.data" and "command.data" inside the shell folder.
+    If you want your script to work with Mash, the first line should contain the commented out version number. For example: # 1.0.0 (note there is a space between # and number)
+    Once you've made something cool, you can make a file within the help folder to print when the user wants help with your command. Make a new file with the name of the script and the extension ".txt" and write whatever the user might need to know when using your command.
+    That's pretty much everything! Have fun writing your own commands!

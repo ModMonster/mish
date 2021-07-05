@@ -1,0 +1,14 @@
+cd - Changes current directory.
+Usage: cd <directory>
+
+Changes the currently active directory to whatever you type. You can use a relative path or an absolute path.
+
+EXAMPLES
+    cd /home
+        Changes directory to the home directory, which is in the root of the filesystem.
+    cd /home/Documents
+        Changes directory to the Documents directory, which is in the home directory, which is in the root of the filesystem.
+    cd Documents
+        Changes directory to the Documents directory inside of the current directory.
+    cd ..
+        Changes directory to the parent directory of the current directory.

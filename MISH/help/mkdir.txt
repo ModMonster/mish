@@ -1,0 +1,14 @@
+mkdir - Makes a directory.
+Usage: mkdir <directory>
+
+Makes a directory with the name of whatever you type. You can use a relative path or an absolute path.
+
+EXAMPLES
+    mkdir example
+        Makes a directory named example in the current directory.
+    mkdir example/hello
+        Makes a directory named hello within the directory example within the current directory.
+    mkdir /example
+        Makes a directory named example within the root of the filesystem.
+    mkdir ../example
+        Makes a directory named example within the parent directory of the current directory.

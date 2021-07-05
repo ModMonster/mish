@@ -1,0 +1,14 @@
+rm - Removes files and directories.
+Usage: rm <path>
+
+Removes whatever file or directory you type. You can use a relative path or an absolute path.
+
+EXAMPLES
+    rm example
+        Removes example from within the current directory.
+    rm example/hello
+        Removes hello from within the directory example within the current directory.
+    rm /example
+        Removes example from within the root of the filesystem.
+    mkdir ../example
+        Removes example from within the parent directory of the current directory.
