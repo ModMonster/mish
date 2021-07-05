@@ -15,10 +15,6 @@ class bcolors:
 
 version = "1.0.0"
 
-# starting message
-print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
-print("Type help for help." + bcolors.ENDC)
-
 # initial variables
 command = ""
 dir = "/home"
@@ -27,6 +23,14 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
+
+updates = mash.CheckUpdates()
+
+# starting message
+print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
+if (len(updates) > 0):
+    print("There are " + str(len(updates)) + " updates available")
+print("Type help for help." + bcolors.ENDC)
 
 def UpdateFiles():
     # write to command file
