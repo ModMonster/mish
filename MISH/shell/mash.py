@@ -21,6 +21,22 @@ helpInstalled = os.path.isdir(root + "/help")
 
 error = False
 
+def BaseInstall(script):
+    # install the script
+    targetURL = mashURL + script + "/" + script + ".py"
+    print("Getting script file from " + targetURL)
+
+    request = requests.get(targetURL)
+    open(root + "/scripts/" + script + ".py", "wb").write(request.content)
+
+    # install the help
+    if (helpInstalled):
+        targetURL = mashURL + script + "/" + script + ".txt"
+        print("Getting help file from " + targetURL)
+
+        request = requests.get(targetURL)
+        open(root + "/help/" + script + ".txt", "wb").write(request.content)
+
 def Install(script):
     global error
     print("Searching for package " + script)
@@ -44,20 +60,7 @@ def Install(script):
             print(size[1] + " of disk space will be used for this install. Continue?")
 
         if (input("(y/n) > ") == "y"):
-            # install the script
-            targetURL = mashURL + script + "/" + script + ".py"
-            print("Getting script file from " + targetURL)
-
-            request = requests.get(targetURL)
-            open(root + "/scripts/" + script + ".py", "wb").write(request.content)
-
-            # install the help
-            if (helpInstalled):
-                targetURL = mashURL + script + "/" + script + ".txt"
-                print("Getting help file from " + targetURL)
-
-                request = requests.get(targetURL)
-                open(root + "/help/" + script + ".txt", "wb").write(request.content)
+            BaseInstall(script)
         else:
             print("Aborting...")
 
@@ -159,8 +162,6 @@ if (os.path.exists(root + "/shell/command.data")):
                     onlineVersion += [version]
                     
                     scripts += [script.replace(".py", "")]
-            print(localVersion)
-            print(onlineVersion)
             currentScript.close()
 
             # check for updates
@@ -178,7 +179,7 @@ if (os.path.exists(root + "/shell/command.data")):
             if (len(updates) > 0):
                 print("Updates are available for " + str(len(updates)) + " scripts.")
                 for script in updates:
-                    Install(script)
+                    BaseInstall(script)
             else:
                 print("Everything is up to date!")
         else:
