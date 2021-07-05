@@ -28,8 +28,11 @@ updates = mash.CheckUpdates()
 
 # starting message
 print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
-if (len(updates) > 0):
-    print("There are " + str(len(updates)) + " updates available")
+# make sure mash exists
+if (os.path.exists(root + "/shell/mash.py")):
+    if (len(updates) > 0):
+        # display updates available
+        print("There are " + str(len(updates)) + " updates available")
 print("Type help for help." + bcolors.ENDC)
 
 def UpdateFiles():
