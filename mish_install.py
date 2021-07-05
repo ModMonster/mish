@@ -34,10 +34,6 @@ class bcolors:
 
 version = "1.0.0"
 
-# starting message
-print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
-print("Type help for help." + bcolors.ENDC)
-
 # initial variables
 command = ""
 dir = "/home"
@@ -46,6 +42,17 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
+
+updates = mash.CheckUpdates()
+
+# starting message
+print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
+# make sure mash exists
+if (os.path.exists(root + "/shell/mash.py")):
+    if (len(updates) > 0):
+        # display updates available
+        print("There are " + str(len(updates)) + " updates available")
+print("Type help for help." + bcolors.ENDC)
 
 def UpdateFiles():
     # write to command file
@@ -116,6 +123,22 @@ helpInstalled = os.path.isdir(root + "/help")
 
 error = False
 
+def BaseInstall(script):
+    # install the script
+    targetURL = mashURL + script + "/" + script + ".py"
+    print("Getting script file from " + targetURL)
+
+    request = requests.get(targetURL)
+    open(root + "/scripts/" + script + ".py", "wb").write(request.content)
+
+    # install the help
+    if (helpInstalled):
+        targetURL = mashURL + script + "/" + script + ".txt"
+        print("Getting help file from " + targetURL)
+
+        request = requests.get(targetURL)
+        open(root + "/help/" + script + ".txt", "wb").write(request.content)
+
 def Install(script):
     global error
     print("Searching for package " + script)
@@ -130,34 +153,75 @@ def Install(script):
         size = size.decode("utf-8")
         size = size.split("\\n")
 
+        print("Package " + script + " version " + size[2] + " is selected for this installation.")
+
         # do we want help?
         if (helpInstalled):
             print(size[0] + " of disk space will be used for this install. Continue?")
         else:
             print(size[1] + " of disk space will be used for this install. Continue?")
 
-        
         if (input("(y/n) > ") == "y"):
-            # install the script
-            targetURL = mashURL + script + "/" + script + ".py"
-            print("Getting script file from " + targetURL)
-
-            request = requests.get(targetURL)
-            open(root + "/scripts/" + script + ".py", "wb").write(request.content)
-
-            # install the help
-            if (helpInstalled):
-                targetURL = mashURL + script + "/" + script + ".txt"
-                print("Getting help file from " + targetURL)
-
-                request = requests.get(targetURL)
-                open(root + "/help/" + script + ".txt", "wb").write(request.content)
+            BaseInstall(script)
         else:
             print("Aborting...")
 
-def Remove(script):
-    print("Removing...")
+def Exists(name):
+    # package ends in /?
+    if (name[-1] == "/"):
+        return False
 
+    try:
+        sizePage = urllib.request.urlopen(mashURL + name + "/info.txt")
+    except urllib.error.HTTPError:
+        return False
+    return True
+
+def CheckUpdates():
+    # find version of files
+    localVersion = []
+    onlineVersion = []
+    scripts = []
+    for script in os.listdir(root + "/scripts"):
+        # find version of local files
+        currentScript = open(root + "/scripts/" + script)
+        versionLine = currentScript.readlines()[0]
+        
+        # is this file in mish?
+        if (versionLine[0] == "#"):
+            versionLine = versionLine.replace("# ", "")
+            version = int(versionLine.replace(".", ""))
+            localVersion += [version]
+
+            # find version of online files
+            scriptName = script.replace(".py", "")
+            onlineScript = urllib.request.urlopen(mashURL + scriptName + "/info.txt")
+
+            # decode
+            onlineScriptLines = onlineScript.read()
+            onlineScriptLines = onlineScriptLines.decode("utf-8")
+            onlineScriptLines = onlineScriptLines.split("\\n")
+
+            version = int(onlineScriptLines[2].replace(".", ""))
+            onlineVersion += [version]
+            
+            scripts += [script.replace(".py", "")]
+    currentScript.close()
+
+    # check for updates
+    updates = []
+
+    for script in scripts:
+        # set index
+        index = scripts.index(script)
+
+        # needs update?
+        if (onlineVersion[index] > localVersion[index]):
+            updates += [script]
+    
+    return updates
+
+# commands
 if (os.path.exists(root + "/shell/command.data")):
 
     file = open(root + "/shell/command.data", "r") # open file in read mode
@@ -211,25 +275,26 @@ if (os.path.exists(root + "/shell/command.data")):
                     print("Specified package " + args[2] + " is not installed.")
             else:
                 print("You need to specify a package to remove.")
+        elif (args[1] == "update"):
+            print("Checking for updates...")
+            updates = CheckUpdates()
+
+            # do the updates
+            if (len(updates) > 0):
+                print("Updates are available for " + str(len(updates)) + " scripts.")
+                for script in updates:
+                    BaseInstall(script)
+            else:
+                print("Everything is up to date!")
         else:
             print("Usage: mash <install/remove> <package>")
             print("Type help mash for more information.")
     else:
         print("Usage: mash <install/remove> <package>")
-        print("Type help mash for more information.")
+        print("Type help mash for more information.")"""
 
-def Exists(name):
-    # package ends in /?
-    if (name[-1] == "/"):
-        return False
-
-    try:
-        sizePage = urllib.request.urlopen(mashURL + name + "/info.txt")
-    except urllib.error.HTTPError:
-        return False
-    return True"""
-
-cdContents = """import os
+cdContents = """# 1.0.0
+import os
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -284,7 +349,8 @@ if (len(args) >= 2):
 else:
     print("You need to specify a directory to change to.")"""
 
-lsContents = """import os
+lsContents = """# 1.0.0
+import os
 
 class bcolors:
     HEADER = '\\033[95m'
@@ -350,7 +416,8 @@ else:
     else:
         print("Specified path doesn't exist.")"""
 
-mkdirContents = """import os
+mkdirContents = """# 1.0.0
+import os
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -399,7 +466,8 @@ if (len(args) >= 2):
 else:
     print("You need to specify the name of the directory you want to make.")"""
 
-rmContents = """import os
+rmContents = """# 1.0.0
+import os
 import shutil
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -432,7 +500,7 @@ if (len(args) >= 2):
         # dot fixes
         newDir = os.path.abspath(root + newDir) # get rid of ..
         newDir = newDir.replace(root, "", 1) # remove root path
-        newDir = newDir.replace("\\\\", "/") # replace \\ with /
+        newDir = newDir.replace("\\\\", "/") # replace \ with /
 
         # fix "nodir"
         if (newDir == ""):
@@ -460,6 +528,107 @@ if (len(args) >= 2):
         print("You need to specify what you want to remove.")
 else:
     print("You need to specify what you want to remove.")"""
+
+execContents = """# 1.0.0
+import os
+
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+file = open(root + "/shell/command.data", "r") # open file in read mode
+commands = file.read() # read commands
+args = commands.split(" ") # save args
+file = open(root + "/shell/dir.data", "r") # open file in read mode
+dir = file.read() # read dir
+file.close() # close file
+
+newDir = ""
+
+if (len(args) >= 2):
+    if (args[1] != ""):
+        # remove last "/"
+        if ((args[1][-1] == "/") & (args[1][0] != "/")):
+            args[1] = args[1][:-1]
+
+        # should be absolute?
+        if (args[1][0] == "/"):
+            newDir = args[1]
+        else:
+            # in root?
+            if (dir == "/"):
+                newDir = dir + args[1]
+            else:
+                newDir = dir + "/" + args[1]
+
+        # dot fixes
+        newDir = os.path.abspath(root + newDir) # get rid of ..
+        newDir = newDir.replace(root, "", 1) # remove root path
+        newDir = newDir.replace("\\\\", "/") # replace \ with /
+
+        # fix "nodir"
+        if (newDir == ""):
+            newDir = "/"
+
+        # is destination a directory?
+        if (os.path.exists(root + newDir)):
+            os.system("start " + root + newDir)
+        else:
+            print("Specified file doesn't exist.")
+    else:
+        print("You need to specify something to excecute.")
+else:
+    print("You need to specify something to excecute.")"""
+
+newContents = """# 1.0.0
+import os
+
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+file = open(root + "/shell/command.data", "r") # open file in read mode
+commands = file.read() # read commands
+args = commands.split(" ") # save args
+file = open(root + "/shell/dir.data", "r") # open file in read mode
+dir = file.read() # read dir
+file.close() # close file
+
+newDir = ""
+
+if (len(args) >= 2):
+    if (args[1] != ""):
+        # remove last "/"
+        if ((args[1][-1] == "/") & (args[1][0] != "/")):
+            args[1] = args[1][:-1]
+
+        # should be absolute?
+        if (args[1][0] == "/"):
+            newDir = args[1]
+        else:
+            # in root?
+            if (dir == "/"):
+                newDir = dir + args[1]
+            else:
+                newDir = dir + "/" + args[1]
+
+        # dot fixes
+        newDir = os.path.abspath(root + newDir) # get rid of ..
+        newDir = newDir.replace(root, "", 1) # remove root path
+        newDir = newDir.replace("\\\\", "/") # replace \ with /
+
+        # fix "nodir"
+        if (newDir == ""):
+            newDir = "/"
+        
+        if (os.path.isdir(os.path.dirname(root + newDir))):
+            if (not os.path.exists(root + newDir)):
+                newFile = open(root + newDir, "w")
+                newFile.close()
+            else:
+                print("File or directory already exists.")
+        else:
+            print("Parent directory of file is a file.")
+    else:
+        print("You need to specify a name for the new file.")
+else:
+    print("You need to specify a name for the new file.")"""
 
 helpContents = """import os
 
@@ -544,6 +713,36 @@ EXAMPLES
         Removes example from within the root of the filesystem.
     mkdir ../example
         Removes example from within the parent directory of the current directory."""
+
+execHelpContents = """exec - Excecutes files.
+Usage: exec <file>
+
+Excecutes the current file in the default application depending on the file type. If the specified path is a folder, it will open in the file manager.
+
+EXAMPLES
+    exec /home
+        Opens the file manager in the home directory, which is in the root of the filesystem.
+    exec /home/text.txt
+        Opens text.txt, which is in the home directory, which is in the root of the filesystem.
+    exec example.txt
+        Opens example.txt, which is inside of the current directory.
+    exec ..
+        Opens the file manager in the parent directory of the current directory."""
+
+newHelpContents = """new - Adds new files.
+Usage: new <file>
+
+Makes a new file with the name of whatever you type.
+
+EXAMPLES
+    make /example.txt
+        Makes a file named example.txt in the root of the filesystem.
+    make /home/example.txt
+        Makes a file named example.txt in the home directory, which is in the root of the filesystem.
+    make example.txt
+        Makes a file named example.txt inside of the current directory.
+    cd ../example.txt
+        Makes a file named example.txt in the parent directory of the current directory."""
 
 mishHelpContents = """Welcome to Mod's Interactive Shell, aka Mish.
 Mish is a modular shell written in Python. It is very easy to make your own commands to run to increase your productivity and help you complete monotonous tasks quickly.
@@ -728,6 +927,8 @@ if (commandsSelected):
     Install(installDir + "/scripts/ls.py", lsContents)
     Install(installDir + "/scripts/mkdir.py", mkdirContents)
     Install(installDir + "/scripts/rm.py", rmContents)
+    Install(installDir + "/scripts/exec.py", execContents)
+    Install(installDir + "/scripts/new.py", newContents)
 
 if (helpSelected):
     print("Installing documentation...")
@@ -737,6 +938,8 @@ if (helpSelected):
     Install(installDir + "/help/mkdir.txt", mkdirHelpContents)
     Install(installDir + "/help/rm.txt", rmHelpContents)
     Install(installDir + "/help/mish.txt", mishHelpContents)
+    Install(installDir + "/help/exec.txt", execHelpContents)
+    Install(installDir + "/help/new.txt", newHelpContents)
     
     if (mashSelected):
         Install(installDir + "/help/mash.txt", mashHelpContents)
