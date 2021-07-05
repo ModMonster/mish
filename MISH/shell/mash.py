@@ -131,14 +131,56 @@ if (os.path.exists(root + "/shell/command.data")):
                 print("You need to specify a package to remove.")
         elif (args[1] == "update"):
             print("Checking for updates...")
+            # find version of files
+            localVersion = []
+            onlineVersion = []
+            scripts = []
             for script in os.listdir(root + "/scripts"):
-                # find version
+                # find version of local files
                 currentScript = open(root + "/scripts/" + script)
                 versionLine = currentScript.readlines()[0]
-                versionLine = versionLine.replace("# ", "")
-                version = int(versionLine.replace(".", ""))
-                print(version)
+                
+                # is this file in mish?
+                if (versionLine[0] == "#"):
+                    versionLine = versionLine.replace("# ", "")
+                    version = int(versionLine.replace(".", ""))
+                    localVersion += [version]
+
+                    # find version of online files
+                    scriptName = script.replace(".py", "")
+                    onlineScript = urllib.request.urlopen(mashURL + scriptName + "/info.txt")
+
+                    # decode
+                    onlineScriptLines = onlineScript.read()
+                    onlineScriptLines = onlineScriptLines.decode("utf-8")
+                    onlineScriptLines = onlineScriptLines.split("\n")
+
+                    version = int(onlineScriptLines[2].replace(".", ""))
+                    onlineVersion += [version]
+                    
+                    scripts += [script.replace(".py", "")]
+            print(localVersion)
+            print(onlineVersion)
             currentScript.close()
+
+            # check for updates
+            updates = []
+
+            for script in scripts:
+                # set index
+                index = scripts.index(script)
+
+                # needs update?
+                if (onlineVersion[index] > localVersion[index]):
+                    updates += [script]
+
+            # do the updates
+            if (len(updates) > 0):
+                print("Updates are available for " + str(len(updates)) + " scripts.")
+                for script in updates:
+                    Install(script)
+            else:
+                print("Everything is up to date!")
         else:
             print("Usage: mash <install/remove> <package>")
             print("Type help mash for more information.")
