@@ -1,0 +1,14 @@
+new - Adds new files.
+Usage: new <file>
+
+Makes a new file with the name of whatever you type.
+
+EXAMPLES
+    make /example.txt
+        Makes a file named example.txt in the root of the filesystem.
+    make /home/example.txt
+        Makes a file named example.txt in the home directory, which is in the root of the filesystem.
+    make example.txt
+        Makes a file named example.txt inside of the current directory.
+    cd ../example.txt
+        Makes a file named example.txt in the parent directory of the current directory.
