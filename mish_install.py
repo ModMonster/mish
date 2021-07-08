@@ -1,6 +1,10 @@
 import os
 
-cls = lambda: os.system('cls') # Clear screen
+# Clear screen
+if (os.name == "nt"):
+    cls = lambda: os.system('cls')
+else:
+    cls = lambda: os.system('clear') 
 
 class bcolors:
     HEADER = '\033[95m'
