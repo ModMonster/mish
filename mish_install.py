@@ -30,25 +30,33 @@ version = "1.0.0"
 
 shellContents = """import os
 
-os.system("color")
+# is windows?
+if (os.name == "nt"):
+    os.system("color")
 
 class bcolors:
-    HEADER = '\\033[95m'
-    OKBLUE = '\\033[94m'
-    OKCYAN = '\\033[96m'
-    OKGREEN = '\\033[92m'
-    WARNING = '\\033[93m'
-    FAIL = '\\033[91m'
-    ENDC = '\\033[0m'
-    BOLD = '\\033[1m'
-    UNDERLINE = '\\033[4m'
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
-version = "1.0.0"
+version = "1.2.0"
 
 # initial variables
 command = ""
 dir = "/home"
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# delete session data in case of force quit
+if (os.path.exists(root + "/shell/command.data")):
+    os.remove(root + "/shell/command.data")
+if (os.path.exists(root + "/shell/dir.data")):
+    os.remove(root + "/shell/dir.data")
 
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
@@ -62,7 +70,10 @@ print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
 if (os.path.exists(root + "/shell/mash.py")):
     if (len(updates) > 0):
         # display updates available
-        print("There are " + str(len(updates)) + " updates available")
+        if (len(updates) == 1):
+            print("There is " + str(len(updates)) + " update available")
+        else:
+            print("There are " + str(len(updates)) + " updates available")
 print("Type help for help." + bcolors.ENDC)
 
 def UpdateFiles():
@@ -540,7 +551,7 @@ if (len(args) >= 2):
 else:
     print("You need to specify what you want to remove.")"""
 
-execContents = """# 1.0.0
+execContents = """# 1.1.0
 import os
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -573,7 +584,7 @@ if (len(args) >= 2):
         # dot fixes
         newDir = os.path.abspath(root + newDir) # get rid of ..
         newDir = newDir.replace(root, "", 1) # remove root path
-        newDir = newDir.replace("\\\\", "/") # replace \ with /
+        newDir = newDir.replace("\\", "/") # replace \ with /
 
         # fix "nodir"
         if (newDir == ""):
@@ -581,7 +592,10 @@ if (len(args) >= 2):
 
         # is destination a directory?
         if (os.path.exists(root + newDir)):
-            os.system("start " + root + newDir)
+            if (os.name == "nt"):
+                os.system("start " + root + newDir)
+            else:
+                os.system("gedit " + root + newDir)
         else:
             print("Specified file doesn't exist.")
     else:
