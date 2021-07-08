@@ -1,6 +1,8 @@
 import os
 
-os.system("color")
+# is windows?
+if (os.name == "nt"):
+    os.system("color")
 
 class bcolors:
     HEADER = '\033[95m'
