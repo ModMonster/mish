@@ -34,7 +34,10 @@ print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
 if (os.path.exists(root + "/shell/mash.py")):
     if (len(updates) > 0):
         # display updates available
-        print("There are " + str(len(updates)) + " updates available")
+        if (len(updates) == 1):
+            print("There is " + str(len(updates)) + " update available")
+        else:
+            print("There are " + str(len(updates)) + " updates available")
 print("Type help for help." + bcolors.ENDC)
 
 def UpdateFiles():
