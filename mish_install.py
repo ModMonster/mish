@@ -1,5 +1,4 @@
 import os
-from time import sleep
 
 cls = lambda: os.system('cls') # Clear screen
 
