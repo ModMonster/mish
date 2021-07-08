@@ -75,10 +75,13 @@ Apart from the obvious Python 3, these are the dependencies you need to use Mish
 These dependencies are required for Mish to operate.
 
 os
+importlib - (installer)
 
 #### Optional
 If you want to run a certain command, you will need the following dependencies. Make sure you have them installed before attempting to run the command.
 
+installer - (easygui, will work without it but will not have graphical directory picker.)
+<br>
 rm - (shutil)
 <br>
 mash - (urllib, requests)

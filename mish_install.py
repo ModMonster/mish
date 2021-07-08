@@ -1,4 +1,12 @@
 import os
+import importlib.util
+
+# is easygui installed?
+if ((spec := importlib.util.find_spec("easygui")) is not None):
+    import easygui
+    useGui = True
+else:
+    useGui = False
 
 # Clear screen
 if (os.name == "nt"):
@@ -833,12 +841,23 @@ while (not os.path.isdir(installDir)):
     cls()
     print(bcolors.HEADER + f"This wizard will install Mish version {version} on your computer." + bcolors.ENDC)
     print("You can press " + bcolors.WARNING + "CTRL+C" + bcolors.ENDC + " any time to abort the installation.")
-    print("Where would you like to install?")
-    if (badDir):
-        installDir = input(bcolors.OKCYAN + "Selected path is not a directory. Try again" + bcolors.ENDC + " > ")
+    
+    # use gui?
+    if (useGui):
+        print("Where would you like to install?")
+        installDir = easygui.diropenbox("Select an empty folder to install Mish within.")
+
+        # did we cancel?
+        if (installDir == None):
+            print("Canceled location picking, aborting.")
+            exit()
     else:
-        installDir = input(bcolors.OKCYAN + "Type a path to an empty folder" + bcolors.ENDC + " > ")
-    badDir = True
+        print("Where would you like to install?")
+        if (badDir):
+            installDir = input(bcolors.OKCYAN + "Selected path is not a directory. Try again" + bcolors.ENDC + " > ")
+        else:
+            installDir = input(bcolors.OKCYAN + "Type a path to an empty folder" + bcolors.ENDC + " > ")
+        badDir = True
 
 cls()
 
