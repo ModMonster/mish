@@ -22,6 +22,12 @@ command = ""
 dir = "/home"
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# delete session data in case of force quit
+if (os.path.exists(root + "/shell/command.data")):
+    os.remove(root + "/shell/command.data")
+if (os.path.exists(root + "/shell/dir.data")):
+    os.remove(root + "/shell/dir.data")
+
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
