@@ -1,4 +1,4 @@
-# 1.0.0
+# 1.0.1
 import os
 import shutil
 
@@ -43,7 +43,7 @@ if (len(args) >= 2):
             if (input("(y/n) > ") == "y"):
                 if (os.path.isdir(root + newDir)):
                     if (len(os.listdir(root + newDir)) == 0):
-                        os.removedirs(root + newDir)
+                        os.rmdir(root + newDir)
                     else:    
                         print("Directory is not empty. Continue anyways?")
                         if (input("(y/n) > ") == "y"):
