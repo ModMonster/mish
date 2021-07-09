@@ -15,7 +15,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-version = "1.2.0"
+version = "1.2.1"
 
 # initial variables
 command = ""
