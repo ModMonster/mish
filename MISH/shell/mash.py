@@ -136,6 +136,8 @@ if (os.path.exists(root + "/shell/command.data")):
     if (len(args) >= 2):
         if (len(args) >= 4):
             yes = args[3] == "yes" or args[3] == "y" # always answer yes?
+        else:
+            yes = False
 
         if (args[1] == "install"):
             if (len(args) >= 3):
