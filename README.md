@@ -86,6 +86,9 @@ rm - (shutil)
 <br>
 mash - (urllib, requests)
 <br>
+stopwatch - (time, threading, math)
+<br>
+timer - (time, threading, math)
 
 ### Installation
 
