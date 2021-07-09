@@ -2,3 +2,4 @@ MISH/shell/*.data
 MISH/shell/__pycache__
 dev/shell/*.data
 dev/scripts/*
+mish_install.py
