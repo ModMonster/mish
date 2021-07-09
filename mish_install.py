@@ -35,15 +35,15 @@ if (os.name == "nt"):
     os.system("color")
 
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = '\\033[95m'
+    OKBLUE = '\\033[94m'
+    OKCYAN = '\\033[96m'
+    OKGREEN = '\\033[92m'
+    WARNING = '\\033[93m'
+    FAIL = '\\033[91m'
+    ENDC = '\\033[0m'
+    BOLD = '\\033[1m'
+    UNDERLINE = '\\033[4m'
 
 version = "1.2.0"
 
@@ -584,7 +584,7 @@ if (len(args) >= 2):
         # dot fixes
         newDir = os.path.abspath(root + newDir) # get rid of ..
         newDir = newDir.replace(root, "", 1) # remove root path
-        newDir = newDir.replace("\\", "/") # replace \ with /
+        newDir = newDir.replace("\\\\", "/") # replace \ with /
 
         # fix "nodir"
         if (newDir == ""):
