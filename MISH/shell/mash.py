@@ -59,10 +59,15 @@ def Install(script):
         else:
             print(size[1] + " of disk space will be used for this install. Continue?")
 
-        if (input("(y/n) > ") == "y"):
+        # autocontinue?
+        if (yes):
+            print("(y/n) > y")
             BaseInstall(script)
         else:
-            print("Aborting...")
+            if (input("(y/n) > ") == "y"):
+                BaseInstall(script)
+            else:
+                print("Aborting...")
 
 def Exists(name):
     # package ends in /?
@@ -129,6 +134,9 @@ if (os.path.exists(root + "/shell/command.data")):
 
     # read command
     if (len(args) >= 2):
+        if (len(args) >= 4):
+            yes = args[3] == "yes" or args[3] == "y" # always answer yes?
+
         if (args[1] == "install"):
             if (len(args) >= 3):
                 # install
@@ -159,7 +167,10 @@ if (os.path.exists(root + "/shell/command.data")):
                         strSize = str(size) + " B"
 
                     print(strSize + " of disk space will be freed. Continue?")
-                    if (input("(y/n) > ") == "y"):
+
+                    # autocontinue?
+                    if (yes):
+                        print("(y/n) > y")
                         # UNINSTALL
                         print("Uninstalling script file")
                         os.remove(root + "/scripts/" + args[2] + ".py")
@@ -168,7 +179,16 @@ if (os.path.exists(root + "/shell/command.data")):
                             print("Uninstalling help file")
                             os.remove(root + "/help/" + args[2] + ".txt")
                     else:
-                        print("Aborting.")
+                        if (input("(y/n) > ") == "y"):
+                            # UNINSTALL
+                            print("Uninstalling script file")
+                            os.remove(root + "/scripts/" + args[2] + ".py")
+                            
+                            if (helpInstalled):
+                                print("Uninstalling help file")
+                                os.remove(root + "/help/" + args[2] + ".txt")
+                        else:
+                            print("Aborting.")
                 else:
                     print("Specified package " + args[2] + " is not installed.")
             else:
