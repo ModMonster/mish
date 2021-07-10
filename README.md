@@ -84,7 +84,7 @@ installer - (easygui, will work without it but will not have graphical directory
 <br>
 rm - (shutil)
 <br>
-mash - (urllib, requests)
+mash - (urllib, requests, importlib)
 <br>
 stopwatch - (time, threading, math)
 <br>

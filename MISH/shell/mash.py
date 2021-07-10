@@ -2,6 +2,7 @@ import os
 import urllib.request
 import urllib.error
 import requests
+import importlib
 
 class bcolors:
     HEADER = '\033[95m'
@@ -38,6 +39,7 @@ def BaseInstall(script):
         open(root + "/help/" + script + ".txt", "wb").write(request.content)
 
 def Install(script):
+    cancel = False
     global error
     print("Searching for package " + script)
     try:
@@ -53,21 +55,57 @@ def Install(script):
 
         print("Package " + script + " version " + size[2] + " is selected for this installation.")
 
-        # do we want help?
-        if (helpInstalled):
-            print(size[0] + " of disk space will be used for this install. Continue?")
-        else:
-            print(size[1] + " of disk space will be used for this install. Continue?")
+        # dependencies
+        hasDependencies = True
 
-        # autocontinue?
-        if (yes):
-            print("(y/n) > y")
-            BaseInstall(script)
-        else:
-            if (input("(y/n) > ") == "y"):
+        # fetch the page
+        try:
+            dependencyPage = urllib.request.urlopen(mashURL + script + "/dependencies.txt")
+        except urllib.error.HTTPError:
+            hasDependencies = False
+
+        # does this script have any dependencies?
+        if (hasDependencies):
+            # decode page
+            dependencies = dependencyPage.read()
+            dependencies = dependencies.decode("utf-8")
+            dependencies = dependencies.split("\n")
+            dependencies = dependencies[:-1]
+
+            # install them
+            for dependency in dependencies:
+                if ((spec := importlib.util.find_spec(dependency)) is None):
+                    print("This package requires " + dependency + " to be installed. Install it?")
+
+                    # install the dependency
+                    if (yes):
+                        print("(y/n) > y")
+                        os.system("pip3 install " + dependency)
+                    else:
+                        if (input("(y/n) > ") == "y"):
+                            os.system("pip3 install " + dependency)
+                        else:
+                            print("Aborting...")
+                            cancel = True
+        
+        # back to script install
+
+        if (not cancel):
+            # do we want help?
+            if (helpInstalled):
+                print(size[0] + " of disk space will be used for this install. Continue?")
+            else:
+                print(size[1] + " of disk space will be used for this install. Continue?")
+
+            # autocontinue?
+            if (yes):
+                print("(y/n) > y")
                 BaseInstall(script)
             else:
-                print("Aborting...")
+                if (input("(y/n) > ") == "y"):
+                    BaseInstall(script)
+                else:
+                    print("Aborting...")            
 
 def Exists(name):
     # package ends in /?
