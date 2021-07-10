@@ -31,8 +31,7 @@ if (os.path.exists(root + "/shell/dir.data")):
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
-
-updates = mash.CheckUpdates()
+    updates = mash.CheckUpdates()
 
 # starting message
 print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")
