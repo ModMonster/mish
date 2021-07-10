@@ -77,6 +77,8 @@ while (command != "exit"):
         if (args[0] == "mash"):
             if (os.path.exists(root + "/shell/mash.py")):
                 exec(open(root + "/shell/mash.py").read())
+            else:
+                print("Unknown command. Type help for help.") # error message
         else: 
             if (command != "exit"):
                 print("Unknown command. Type help for help.") # error message
