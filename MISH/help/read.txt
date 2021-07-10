@@ -1,0 +1,14 @@
+read - Reads contents of files.
+Usage: read <file>
+
+Reads and displays the contents of whatever file you type. You can use a relative path or an absolute path.
+
+EXAMPLES
+    read /file.txt
+        Reads the contents of file.txt, which is in the root of the filesystem.
+    read /home/file.txt
+        Reads the contents of file.txt, which is in the home directory, which is in the root of the filesystem.
+    read file.txt
+        Reads the contents of file.txt, which is inside of the current directory.
+    read ../file.txt
+        Reads the contents of file.txt, which is in the parent directory of the current directory.
