@@ -1,15 +1,17 @@
 [codelines-shield]: https://img.shields.io/tokei/lines/github.com/ModMonster/mish?label=Lines%20of%20code&style=for-the-badge
 [codelines-url]: https://github.com/modmonster/mish
-[version-shield]: https://img.shields.io/github/v/tag/ModMonster/mish?label=Latest&style=for-the-badge
+[version-shield]: https://img.shields.io/github/v/tag/ModMonster/mish?label=Latest%20Release&style=for-the-badge
 [version-url]: https://github.com/modmonster/mish/releases
-[commits-shield]: https://img.shields.io/github/commits-since/modmonster/mish/v1.0.0-alpha/master?label=commits&style=for-the-badge
 [commits-url]: https://github.com/modmonster/mish/commits/master
 [latestcommit-shield]: https://img.shields.io/github/last-commit/ModMonster/mish?label=Latest%20Commit&style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/modmonster/mish?style=for-the-badge
+[issues-url]: https://github.com/modmonster/mish/issues
+
 
 [![Lines of Code][codelines-shield]][codelines-url]
 [![Release][version-shield]][version-url]
-[![Commits][commits-shield]][commits-url]
 [![Latest Commit][latestcommit-shield]][commits-url]
+[![Issues][issues-shield]][issues-url]
 
 [screenshot]: https://raw.githubusercontent.com/ModMonster/mish/master/logo.png
 
