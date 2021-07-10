@@ -1,0 +1,17 @@
+name: Command Request
+description: Request a command to be added to Mish
+title: "[Command]: "
+labels: [command]
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the command you are requesting.
+    validations:
+      required: true
+  - type: checkboxes
+    id: pull-request
+    attributes:
+      label: Pull Request
+      options:
+        - label: If the command was approved, would you be willing to submit a pull request and do it yourself?

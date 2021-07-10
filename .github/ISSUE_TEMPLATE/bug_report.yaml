@@ -1,0 +1,44 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Only report this bug if you are running the latest release or prerelease version of Mish, or can reproduce it on the latest version of Mish.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce this bug?
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of Mish are you running?
+      options:
+        - Latest release
+        - Latest pre-release
+        - Latest commit on the Master branch
+    validations:
+      required: true
+  - type: textarea
+    id: error-message
+    attributes:
+      label: What error message are you getting?
+      description: Copy and paste the error message (if there is one) into this box.
+      render: shell
