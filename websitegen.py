@@ -3,6 +3,16 @@ import easygui
 
 script = input("Enter the name of the script > ")
 message = input("Enter a brief description of the script > ")
+teaser = input("Enter an even briefer description of the script > ")
+
+print("Pick the index.html file from the website.")
+browser = easygui.fileopenbox(msg="Pick the index.html file from the website.")
+
+tableElement = f"""													<tr>
+														<td>{script}</td>
+														<td>{teaser}</td>
+														<td style="text-align:right"><a href="{script}.html#downloads" class="button primary">Go to Downloads</a></td>
+													</tr>\n"""
 
 template = f"""<!DOCTYPE HTML>
 <!--
@@ -120,3 +130,14 @@ if (savePath != None):
     file = open(savePath, "w", encoding="utf-8")
     file.write(template)
     file.close()
+
+if (browser != None):
+	file = open(browser, "r")
+	contents = file.readlines()
+	file.close()
+	endLine = contents.index("												</tbody>\n")
+	contents.insert(endLine, tableElement)
+	print(contents)
+	file = open(browser, "w")
+	file.writelines(contents)
+	file.close()
