@@ -31,7 +31,16 @@ if (os.path.exists(root + "/shell/dir.data")):
 # import mash
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
-    updates = mash.CheckUpdates()
+    
+    # read config file
+    mashconfFile = open(root + "/shell/mash.conf", "r")
+    mashconf = mashconfFile.readlines()
+    mashconfFile.close()
+
+    # check for updates
+    updates = []
+    if (mashconf[0] == "true"):
+        updates = mash.CheckUpdates()
 
 # starting message
 print(bcolors.HEADER + f"Mod's Interactive Shell v{version}")

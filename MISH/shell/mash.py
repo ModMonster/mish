@@ -244,6 +244,25 @@ if (os.path.exists(root + "/shell/command.data")):
                     BaseInstall(script)
             else:
                 print("Everything is up to date!")
+        elif (args[1] == "config"):
+            if (len(args) == 2):
+                print("You need to specify a configuration option to change.")
+            elif (len(args) == 3):
+                print("You need to specify what you want to change the configuration option to.")
+            else:
+                # open file
+                mashconfFile = open(root + "/shell/mash.conf", "r")
+                mashconf = mashconfFile.readlines()
+                mashconfFile = open(root + "/shell/mash.conf", "w")
+
+                # write config
+                if (args[2] == "checkupdates" and (args[3] == "true" or args[3] == "false")):
+                    mashconf[0] = args[3]
+                else:
+                    print("Invalid configuration option.")
+                
+                mashconfFile.writelines(mashconf)
+                mashconfFile.close()
         else:
             print("Usage: mash <install/remove> <package>")
             print("Type help mash for more information.")
