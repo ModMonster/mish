@@ -47,6 +47,10 @@ def Install(script):
     except urllib.error.HTTPError:
         print(bcolors.FAIL + "Specified package " + script + " does not exist in the Mash repositories." + bcolors.ENDC)
         error = True
+    except urllib.error.URLError:
+        print("You are not connected to the internet.")
+        return
+
     if (not error):
         # get size of packages
         size = sizePage.read()
@@ -136,7 +140,12 @@ def CheckUpdates():
 
             # find version of online files
             scriptName = script.replace(".py", "")
-            onlineScript = urllib.request.urlopen(mashURL + scriptName + "/info.txt")
+
+            # are we connected to internet?
+            try:
+                onlineScript = urllib.request.urlopen(mashURL + scriptName + "/info.txt")
+            except urllib.error.URLError:
+                return []
 
             # decode
             onlineScriptLines = onlineScript.read()
