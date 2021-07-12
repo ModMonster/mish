@@ -32,6 +32,12 @@ if (os.path.exists(root + "/shell/dir.data")):
 if (os.path.isfile(root + "/shell/mash.py")):
     import mash
     
+    # make config file if it doesnt exist
+    if (not os.path.isfile(root + "/shell/mash.conf")):
+        mashconfFile = open(root + "/shell/mash.conf", "w")
+        mashconfFile.write("false")
+        mashconfFile.close()
+
     # read config file
     mashconfFile = open(root + "/shell/mash.conf", "r")
     mashconf = mashconfFile.readlines()
